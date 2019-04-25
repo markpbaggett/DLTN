@@ -74,6 +74,7 @@ testValidityOfUTKMODStoMODS() {
         curl "https://dpla.lib.utk.edu/repox/OAIHandler?verb=ListRecords&metadataPrefix=mods&set=$line" 2>&1 2>/dev/null 1>"$DATADIR/$line.xml"
     done
     for filename in ${DATADIR}/*.xml; do
+        TESTFILE="../working_directory/${filename}"
         ${SAXON} ${filename} ${STYLESHEETS}/utkmodstomods.xsl 2>&1 2>/dev/null 1>${TESTFILE}
         RESPONSE=$(xmllint --noout --schema ${DLTNMODS} ${TESTFILE} 2>&1 1>/dev/null | cat)
         assertEquals "${RESPONSE}" "${TESTFILE} validates"
